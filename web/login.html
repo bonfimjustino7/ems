@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -14,13 +14,20 @@
             <div class="header">Login</div>
             <h1>Bem Vindo</h1>
             <p>Por favor acesse sua conta</p>
-            <form>
+            <form id="formulario">
                 <label for="login">Login / Email</label>
                 <input id="login" type="text" name="login">
                 <label for="password">Senha</label>
                 <input id="password" type="password" name="password">
+
+                <div class="actions">
+                    <a href="#">Esqueci minha senha</a>
+                    <button type="submit">OK</button>
+                </div>
             </form>
         </div>
     </div>
+
+   <script src="js/login.js"></script> 
 </body>
 </html>
