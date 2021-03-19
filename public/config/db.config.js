@@ -1,5 +1,11 @@
-// const { dialog } = require("electron");
 const mysql = require("mysql");
+const fs = require("fs");
+
+const path = require("path");
+
+const dataSql = fs
+  .readFileSync(`${path.join(__dirname, "../database/tables.sql")}`)
+  .toString();
 
 const dbConn = mysql.createConnection({
   host: "localhost",
@@ -11,14 +17,15 @@ const dbConn = mysql.createConnection({
 
 dbConn.connect((err) => {
   if (err) {
-    // dialog.showErrorBox(
-    //   "Error",
-    //   "Não foi possivel estabelecer uma conexão com o banco de dados."
-    // );
-    console.log(err);
-  } else {
-    console.log("Database Connected");
+    return console.log(err);
   }
+
+  dbConn.query(dataSql, (err, results, fields) => {
+    if (err) {
+      console.log(err.message);
+    }
+  });
+  console.log("Database connected");
 });
 
 module.exports = dbConn;
