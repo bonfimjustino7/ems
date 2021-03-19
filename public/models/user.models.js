@@ -1,4 +1,4 @@
-const db = require("../models/generic.models");
+const db = require("./generic.models");
 
 const User = function (user) {
   this.login = user.login;

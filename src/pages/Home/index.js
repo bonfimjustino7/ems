@@ -1,7 +1,9 @@
 import React from "react";
+import { useAuth } from "../../context/auth";
 
 const Home = () => {
-  return <h1>Página Home</h1>;
+  const { contextData } = useAuth();
+  return <h1>Bem vindo {contextData.login}</h1>;
 };
 
 export default Home;

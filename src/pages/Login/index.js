@@ -1,23 +1,32 @@
 import React, { useEffect } from "react";
 import "./styles.css";
 import { useHistory } from "react-router-dom";
+import { useAuth } from "../../context/auth";
 
 const { ipcRenderer } = window.require("electron");
 
 const Login = () => {
   const history = useHistory();
+  const { setContext } = useAuth();
 
   useEffect(() => {
     ipcRenderer.on("login-reply", (e, resp) => {
-      console.log(resp);
-      history.push("/home");
+      console.log("Resposta do ipcmain: ", resp);
+      if (resp) {
+        setContext({ login: resp });
+        history.push("/home");
+      } else {
+        alert("Login inválido");
+      }
     });
   }, [history]);
 
   const onSubmit = (e) => {
     e.preventDefault();
+    const login = document.getElementById("login").value;
+    const password = document.getElementById("password").value;
 
-    ipcRenderer.send("login", { login: "teste" });
+    ipcRenderer.send("login", { login, password });
   };
 
   return (
