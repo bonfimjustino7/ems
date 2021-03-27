@@ -4,7 +4,7 @@ const User = function (user) {
   this.login = user.login;
   this.password = user.password;
 };
-db.table = "user";
+db.table = "usuario";
 
 User.objects = db;
 

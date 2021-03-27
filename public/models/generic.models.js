@@ -1,3 +1,4 @@
+const mysql = require("mysql");
 const dbConn = require("../config/db.config");
 
 exports.table = null;
@@ -36,7 +37,9 @@ exports.findById = function (id) {
 
 exports.filter = function (filters, limit) {
   let params = Object.keys(filters).map((key) => {
-    return `${key} = '${filters[key]}'`;
+    const valor = dbConn.escape(filters[key]);
+
+    return `${key} = ${valor}`;
   });
 
   params = params.join(" AND ");
@@ -47,6 +50,7 @@ exports.filter = function (filters, limit) {
   } else {
     queryStr = `SELECT * FROM ${exports.table} WHERE ${params}`;
   }
+
   return new Promise((resolve, reject) => {
     dbConn.query(queryStr, function (err, res) {
       if (err) {

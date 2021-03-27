@@ -1,11 +1,13 @@
 
 CREATE TABLE IF NOT EXISTS usuario (
     id INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
-    email VARCHAR(200) NOT NULL,    
+    login VARCHAR(200) NOT NULL,
+    password VARCHAR(200) NOT NULL,
     nome  VARCHAR(200) NOT NULL,
-    sobrenome  VARCHAR(200) NOT NULL,
+    email VARCHAR(200) NOT NULL,    
+    sobrenome  VARCHAR(200),
     cpf  VARCHAR(11) NOT NULL,
-    telefone  VARCHAR(9) NOT NULL,
+    telefone  VARCHAR(9),
     tipoconta BOOLEAN DEFAULT 0,
     gerente INT,
     UNIQUE(cpf)
