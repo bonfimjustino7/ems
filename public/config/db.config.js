@@ -1,8 +1,6 @@
 const mysql = require("mysql");
 const fs = require("fs");
-
 const path = require("path");
-
 const dataSql = fs
   .readFileSync(`${path.join(__dirname, "../database/tables.sql")}`)
   .toString();
@@ -15,17 +13,22 @@ const dbConn = mysql.createConnection({
   multipleStatements: true,
 });
 
-dbConn.connect((err) => {
-  if (err) {
-    return console.log(err);
-  }
+const conectar = () => {
+  return new Promise((resolve, reject) => {
+    dbConn.connect((err) => {
+      if (err) {
+        reject(err);
+      }
 
-  dbConn.query(dataSql, (err, results, fields) => {
-    if (err) {
-      console.log(err.message);
-    }
+      dbConn.query(dataSql, (err, results, fields) => {
+        if (err) {
+          console.log(err.message);
+        }
+      });
+      resolve("Database connected");
+    });
   });
-  console.log("Database connected");
-});
+};
 
-module.exports = dbConn;
+exports.conectar = conectar;
+exports.getConexao = dbConn;

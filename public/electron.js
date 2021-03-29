@@ -1,7 +1,9 @@
-const { app, BrowserWindow, dialog } = require("electron");
+const { app, BrowserWindow } = require("electron");
 const path = require("path");
 
 const isDev = require("electron-is-dev");
+const conn = require("./config/db.config");
+const { generateMock } = require("./controllers/populate");
 
 // Enable live reload for Electron too
 if (isDev) {
@@ -10,17 +12,18 @@ if (isDev) {
   });
 }
 
-app.on("ready", () => {
+app.on("ready", async () => {
+  await conn.conectar();
+  generateMock();
   createWindow();
 });
 
-const createWindow = (exports.createWindow = () => {
+const createWindow = () => {
   const newWindow = new BrowserWindow({
     width: 1100,
     height: 600,
     show: false,
     resizable: false,
-    alwaysOnTop: true,
     webPreferences: {
       nodeIntegration: true,
     },
@@ -32,7 +35,7 @@ const createWindow = (exports.createWindow = () => {
       : `file://${path.join(__dirname, "../build/index.html")}`
   );
   newWindow.setMenu(null);
-  // newWindow.webContents.openDevTools();
+  newWindow.webContents.openDevTools();
 
   const splash = new BrowserWindow({
     width: 800,
@@ -54,7 +57,7 @@ const createWindow = (exports.createWindow = () => {
       newWindow.show();
     }, 3000);
   });
-});
+};
 
 app.on("window-all-closed", () => {
   if (process.platform !== "darwin") {

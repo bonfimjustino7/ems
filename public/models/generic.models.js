@@ -1,109 +1,118 @@
-const mysql = require("mysql");
-const dbConn = require("../config/db.config");
+const { getConexao } = require("../config/db.config");
 
-exports.table = null;
-exports.create = function (user) {
-  return new Promise((resolve, reject) => {
-    dbConn.query(
-      `INSERT INTO ${exports.table} set ?`,
-      user,
-      function (err, res) {
-        if (err) {
-          console.log("error: ", err);
-          reject(err);
-        } else {
-          resolve(res);
-        }
-      }
-    );
-  });
-};
-exports.findById = function (id) {
-  return new Promise((resolve, reject) => {
-    dbConn.query(
-      `SELECT * FROM ${exports.table} where id = ? `,
-      id,
-      function (err, res) {
-        if (err) {
-          console.log("error: ", err);
-          reject(err);
-        } else {
-          resolve(res);
-        }
-      }
-    );
-  });
-};
-
-exports.filter = function (filters, limit) {
-  let params = Object.keys(filters).map((key) => {
-    const valor = dbConn.escape(filters[key]);
-
-    return `${key} = ${valor}`;
-  });
-
-  params = params.join(" AND ");
-
-  let queryStr;
-  if (limit) {
-    queryStr = `SELECT * FROM ${exports.table} WHERE ${params} LIMIT ${limit}`;
-  } else {
-    queryStr = `SELECT * FROM ${exports.table} WHERE ${params}`;
+class Consultas {
+  constructor(table) {
+    this.table_name = table;
   }
 
-  return new Promise((resolve, reject) => {
-    dbConn.query(queryStr, function (err, res) {
-      if (err) {
-        console.log("error: ", err);
-        reject(err);
-      } else {
-        resolve(res);
-      }
-    });
-  });
-};
-
-exports.findAll = function () {
-  return new Promise((resolve, reject) => {
-    dbConn.query(`SELECT * FROM ${exports.table}`, function (err, res) {
-      if (err) {
-        console.log("error: ", err);
-        reject(err);
-      } else {
-        resolve(res);
-      }
-    });
-  });
-};
-
-exports.update = function (id, user) {
-  return new Promise((resolve, reject) => {
-    dbConn.query(
-      `UPDATE ${exports.table} SET ? WHERE id = ?`,
-      [user, id],
-      function (err, res) {
-        if (err) {
-          reject(err);
-        } else {
-          resolve(res);
+  create() {
+    return new Promise((resolve, reject) => {
+      getConexao.query(
+        `INSERT INTO ${this.table_name} set ?`,
+        this,
+        function (err, res) {
+          if (err) {
+            console.log("error: ", err);
+            reject(err);
+          } else {
+            resolve(res);
+          }
         }
+      );
+    });
+  }
+  findById(id) {
+    return new Promise((resolve, reject) => {
+      getConexao.query(
+        `SELECT * FROM ${this.table_name} where id = ? `,
+        id,
+        function (err, res) {
+          if (err) {
+            console.log("error: ", err);
+            reject(err);
+          } else {
+            resolve(res);
+          }
+        }
+      );
+    });
+  }
+
+  filter(filters, limit = 1) {
+    if (Object.keys(filters).length) {
+      let params = Object.keys(filters).map((key) => {
+        const valor = getConexao.escape(filters[key]);
+
+        return `${key} = ${valor}`;
+      });
+
+      params = params.join(" AND ");
+
+      let queryStr;
+      if (limit) {
+        queryStr = `SELECT * FROM ${this.table_name} WHERE ${params} LIMIT ${limit}`;
+      } else {
+        queryStr = `SELECT * FROM ${this.table_name} WHERE ${params}`;
       }
-    );
-  });
-};
-exports.delete = function (id) {
-  return new Promise((resolve, reject) => {
-    dbConn.query(
-      `DELETE FROM ${exports.table} WHERE id = ?`,
-      [id],
-      function (err, res) {
+
+      return new Promise((resolve, reject) => {
+        getConexao.query(queryStr, function (err, res) {
+          if (err) {
+            console.log("error: ", err);
+            reject(err);
+          } else {
+            resolve(res);
+          }
+        });
+      });
+    } else {
+      return this.findAll();
+    }
+  }
+
+  findAll() {
+    return new Promise((resolve, reject) => {
+      getConexao.query(`SELECT * FROM ${this.table_name}`, function (err, res) {
         if (err) {
           console.log("error: ", err);
           reject(err);
         } else {
           resolve(res);
         }
-      }
-    );
-  });
-};
+      });
+    });
+  }
+
+  update(id) {
+    return new Promise((resolve, reject) => {
+      getConexao.query(
+        `UPDATE ${this.table_name} SET ? WHERE id = ?`,
+        [this, id],
+        function (err, res) {
+          if (err) {
+            reject(err);
+          } else {
+            resolve(res);
+          }
+        }
+      );
+    });
+  }
+  delete(id) {
+    return new Promise((resolve, reject) => {
+      getConexao.query(
+        `DELETE FROM ${this.table_name} WHERE id = ?`,
+        [id],
+        function (err, res) {
+          if (err) {
+            console.log("error: ", err);
+            reject(err);
+          } else {
+            resolve(res);
+          }
+        }
+      );
+    });
+  }
+}
+module.exports = Consultas;

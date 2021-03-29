@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<users>
+    <user login="admin" password="admin" nome="Administrador" email="admin@email.com" cpf="00000000000" />    
+</users> 

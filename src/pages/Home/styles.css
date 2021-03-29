@@ -1,0 +1,247 @@
+/*Limpando formatações padrão*/
+* {
+  margin: 0;
+  padding: 0;
+  user-select: none;
+}
+
+body {
+  overflow-y: scroll;
+}
+/* Let's get this party started */
+::-webkit-scrollbar {
+  width: 9px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background-color: #013f4a;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  -webkit-border-radius: 10px;
+  border-radius: 10px;
+  background: rgba(45, 128, 114, 0.582);
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.8);
+}
+/* ::-webkit-scrollbar-thumb:window-inactive {
+  background: rgba(255, 0, 0, 0.4);
+} */
+
+/*Layout*/
+.container {
+  display: flex;
+  flex-direction: column;
+
+  width: 1000px;
+  margin: 0 auto;
+}
+header {
+  min-width: 1000px;
+  width: 100%;
+}
+
+#cabecalho {
+  background-color: #013f4a;
+  text-align: center;
+  height: 120px;
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: space-between;
+}
+
+#cabecalho #titulo {
+  color: #ffffff;
+  font-weight: bold;
+  font-size: 49px;
+}
+
+#cabecalho img {
+  width: 90px;
+}
+
+#cabecalho #icone_user {
+  float: left;
+  margin-top: 10px;
+  margin-left: 30px;
+  padding: 10px;
+  cursor: pointer;
+}
+#cabecalho #icone_user:active {
+  background-color: rgb(179 193 195 / 67%);
+}
+#cabecalho #icone_user:hover {
+  background-color: rgb(179 193 195 / 67%);
+}
+
+#cabecalho #icone_carrinho {
+  float: right;
+  margin-top: 15px;
+  margin-right: 50px;
+  padding: 10px;
+  cursor: pointer;
+}
+#cabecalho #icone_carrinho:active {
+  background-color: rgb(179 193 195 / 67%);
+}
+#cabecalho #icone_carrinho:hover {
+  background-color: rgb(179 193 195 / 67%);
+}
+#subtitulo {
+  background-color: rgba(1, 63, 74, 0.67);
+  height: 70px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#subtitulo #subSpan {
+  color: #ffffff;
+  text-align: center;
+  text-transform: uppercase;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+#campo_busca {
+  color: #a7b9e5;
+  border: 1px solid #000aff;
+  background-color: #f4efef;
+  border-radius: 5px;
+  height: 60px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 20px;
+}
+
+#txtBusca {
+  height: 60px;
+  flex: 1;
+  border: none;
+  background-color: transparent;
+  font-size: 2em;
+  padding-left: 20px;
+  outline: none;
+}
+
+#campo_busca #btnBusca {
+  background-color: #013f4a;
+  height: 60px;
+}
+
+#campo_busca #btnBusca:hover {
+  background-color: rgba(1, 63, 74, 0.67);
+  cursor: pointer;
+}
+
+#campo_busca #btnLupa {
+  border: none;
+  outline: none;
+  cursor: pointer;
+  background: rgba(1, 63, 74, 0.67);
+  padding: 10px;
+  margin: 0 2px;
+}
+
+#campo_busca #btnLupa:hover {
+  background-color: #013f4a;
+}
+#menu {
+  margin-top: 30px;
+  width: 100%;
+
+  display: flex;
+}
+
+#menu button {
+  border: 1px solid #000000;
+  border-radius: 15px;
+  text-decoration: none;
+  color: #000000;
+  padding-left: 3%;
+  padding-right: 3%;
+  padding-top: 0.5%;
+  padding-bottom: 0.5%;
+  width: 200px;
+  text-align: center;
+  font-size: 1.2em;
+  outline: none;
+  font-weight: bold;
+  margin-right: 10px;
+}
+#menu button:last-child {
+  margin-right: 0px;
+}
+#menu button.active {
+  background-color: rgba(1, 63, 74, 0.67);
+  color: #ffffff;
+}
+
+#menu button:hover {
+  color: #ffffff;
+  background-color: rgba(1, 63, 74, 0.67);
+  border: 1px solid rgba(1, 63, 74, 0.67);
+}
+
+#conteudo {
+  margin-top: 20px;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+#conteudo .produtos {
+  background-color: rgba(1, 63, 74, 0.67);
+  width: 18%;
+  text-align: center;
+  padding: 1%;
+  margin: 20px 10px;
+}
+
+#conteudo .produtos .nome_produto {
+  color: #ffffff;
+  text-transform: uppercase;
+  font-weight: bold;
+}
+
+#conteudo .produtos .img_produto {
+  margin-top: 10px;
+  height: 130px;
+  background-color: #ffffff;
+}
+
+#conteudo .produtos .detalhes {
+  margin-top: 20px;
+  text-transform: uppercase;
+  font-weight: bold;
+}
+
+#conteudo .produtos .detalhes a {
+  color: #0000ff;
+}
+
+#conteudo .produtos .detalhes a:hover {
+  color: #013f4a;
+}
+
+#conteudo .produtos button {
+  padding-left: 5%;
+  padding-right: 5%;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  font-size: 1.1em;
+  margin-top: 25px;
+  border: none;
+  border-radius: 5px;
+  color: #ffffff;
+  background-color: #013f4a;
+}
+
+#conteudo .produtos button:hover {
+  background-color: #ffffff;
+  color: #013f4a;
+  font-weight: bold;
+  cursor: pointer;
+}

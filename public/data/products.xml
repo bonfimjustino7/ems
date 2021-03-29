@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<products>
+    <product nome="Arroz" tipo="secos" preco="3.99" marca="Bijo" quantidade="300" descricao="Arroz Pai zé branco" codigo_barras="112331212" usuario="1" /> 
+    <product nome="Feijão" tipo="secos" preco="2.00" marca="Corda" quantidade="100" descricao="Feijão de corda" codigo_barras="112333333" usuario="1" /> 
+    <product nome="Bolacha Maria" tipo="secos" preco="4.00" marca="Fortaleza" quantidade="200" descricao="Bolacha Fortaleza" codigo_barras="112331211" usuario="1" /> 
+    <product nome="Detergente IPE" tipo="limpeza" preco="7.00" marca="IPE" quantidade="100" descricao="Detergente IPE brilha mais" codigo_barras="112233444" usuario="1" /> 
+    <product nome="Assolam Bombril" tipo="limpeza" preco="2.00" marca="Bombril" quantidade="12" descricao="Bombril assolam" codigo_barras="112331212" usuario="1" /> 
+</products>

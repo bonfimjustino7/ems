@@ -10,14 +10,14 @@ CREATE TABLE IF NOT EXISTS usuario (
     telefone  VARCHAR(9),
     tipoconta BOOLEAN DEFAULT 0,
     gerente INT,
-    UNIQUE(cpf)
-
+    UNIQUE(cpf),
+    table_name VARCHAR(200)
 );
 
 ALTER TABLE usuario ADD FOREIGN KEY(gerente) REFERENCES usuario(id);
 
 
-CREATE TABLE IF NOT EXISTS produto (
+CREATE TABLE IF NOT EXISTS produto (    
     id INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
     nome VARCHAR(200) NOT NULL,
     marca VARCHAR(200),
@@ -27,6 +27,8 @@ CREATE TABLE IF NOT EXISTS produto (
     tamanho FLOAT,
     descricao VARCHAR(200),
     usuario INT, 
+    tipo VARCHAR(200) NOT NULL,
+    table_name VARCHAR(200),
     CONSTRAINT FK_usuario FOREIGN KEY(usuario) REFERENCES usuario(id)
 );
 
@@ -35,6 +37,8 @@ CREATE TABLE IF NOT EXISTS pedido (
     usuario_id INT NOT NULL,
     produto_id INT NOT NULL,
     quantidade INT NOT NULL DEFAULT 0,
+    status VARCHAR(200) DEFAULT 'IN PROGRESS',
     CONSTRAINT FK_usuario_pedido FOREIGN KEY(usuario_id) REFERENCES usuario(id),
-    CONSTRAINT FK_produto FOREIGN KEY(produto_id) REFERENCES produto(id)
+    CONSTRAINT FK_produto FOREIGN KEY(produto_id) REFERENCES produto(id),
+    table_name VARCHAR(200)
 );

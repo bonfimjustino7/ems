@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import "./styles.css";
 import { useHistory } from "react-router-dom";
 import { useAuth } from "../../context/auth";
+import Img from "../../assets/img/logo.png";
 
 const { ipcRenderer } = window.require("electron");
 
@@ -31,7 +32,10 @@ const Login = () => {
 
   return (
     <div className="main">
-      <div className="bg"></div>
+      <div className="bg">
+        <div id="logo"></div>
+        <img src={Img} alt="logo" />
+      </div>
       <div className="form-login">
         <div className="header">Login</div>
         <h1>Bem Vindo</h1>
