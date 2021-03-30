@@ -123,6 +123,12 @@ const Home = () => {
                   <a>Detalhes</a>
                 </div>
 
+                <div className="detalhes">
+                  <span style={{ color: "white" }}>
+                    Preço: R$ {produto.preco ? produto.preco.toFixed(2) : 0.0}
+                  </span>
+                </div>
+
                 <button
                   onClick={() => handlerAddCarrinho(produto.id)}
                   type="button"
