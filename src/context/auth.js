@@ -5,6 +5,7 @@ const AuthContext = createContext();
 export default function AuthProvider({ children }) {
   const [contextData, setContext] = useState({
     login: null,
+    usuario_id: null,
   });
 
   return (

@@ -1,4 +1,5 @@
 const { getConexao } = require("../config/db.config");
+const { ToJson } = require("../utils/sql");
 
 class Consultas {
   constructor(table) {
@@ -31,7 +32,7 @@ class Consultas {
             console.log("error: ", err);
             reject(err);
           } else {
-            resolve(res);
+            resolve(ToJson(res)[0]);
           }
         }
       );
@@ -61,7 +62,7 @@ class Consultas {
             console.log("error: ", err);
             reject(err);
           } else {
-            resolve(res);
+            resolve(ToJson(res));
           }
         });
       });

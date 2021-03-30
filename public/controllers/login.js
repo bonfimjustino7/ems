@@ -1,14 +1,14 @@
 const User = require("../models/user.models");
+const { ToJson } = require("../utils/sql");
 
 exports.Auth = async function (login, password) {
   try {
-    const res = await new User({ login, password }).filter(
+    const user = await new User({ login, password }).filter(
       { login, password },
       1
     );
-    const user = JSON.parse(JSON.stringify(res));
     if (user.length) {
-      return user[0].login;
+      return { usuario: user[0].nome, usuario_id: user[0].id };
     } else {
       return false;
     }

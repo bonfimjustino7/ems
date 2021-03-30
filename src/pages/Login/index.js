@@ -14,7 +14,7 @@ const Login = () => {
     ipcRenderer.on("login-reply", (e, resp) => {
       console.log("Resposta do ipcmain: ", resp);
       if (resp) {
-        setContext({ login: resp });
+        setContext({ usuario: resp.usuario, usuario_id: resp.usuario_id });
         history.push("/home");
       } else {
         alert("Login inválido");

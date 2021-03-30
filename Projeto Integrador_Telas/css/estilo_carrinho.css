@@ -1,0 +1,245 @@
+/*Limpando formatações padrão*/
+*{
+    margin: 0;
+    padding: 0;
+}
+
+body{
+    font-size: 1em;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+input:focus{
+    box-shadow: none;
+    outline: none;
+}
+/*Layout*/
+#cabecalho{
+    background-color: #013F4A;
+    text-align: center;
+    height: 120px;
+}
+
+#cabecalho img{
+    width: 90px;
+}
+
+#cabecalho #titulo{
+    color: #FFFFFF;
+    font-weight: bold;
+    font-size: 4.5em;
+    margin-right: 5.7%;
+}
+
+#cabecalho #icone_user{
+    float: left;
+    margin-top: 10px;
+}
+
+#cabecalho #icone_carrinho{
+    position: relative;
+    margin-top: 10px;
+    right: 42%;
+    float: right;
+}
+
+#cabecalho #subtitulo{
+    background-color:  rgba(1, 63, 74, 0.67);
+    position: absolute;
+    width: 100%;
+    height: 70px;
+    left: 0px;
+    top: 120px;
+}
+
+#cabecalho #subtitulo #subSpan{
+    color: #ffffff;
+    position: relative;
+    top: 10px;
+    text-transform: uppercase;
+    font-size: 2.25em;
+    font-weight: bold;
+}
+
+#produtos_adicionados{
+    text-transform: uppercase;
+    font-weight: bold;
+    font-size: 2.2em;
+    position: absolute;
+    top: 30%;
+    left: 5%;
+}
+
+hr{
+    position: absolute;
+    top: 40%;
+    width: 100%;
+}
+
+.container{
+    position: absolute;
+    top: 50%;
+    left: 5%;
+    display: flex;
+    flex-direction: column;
+}
+
+.container .produtos{
+    width: 140%;
+    border: 1px solid #c4c4c4;
+    border-radius: 5px;
+    text-align: center;
+    margin-bottom: 5%;
+    padding-right: 5%;
+
+}
+.produtos .img_produto{
+    background-color: #c4c4c4;
+    float: left;
+    width: 40%;
+    height: 195px;
+    margin-right: 5%;
+}
+
+.produtos span{
+    text-align: center;
+}
+
+.produtos .nome_produto{
+    text-transform: uppercase;
+    font-weight: bold;
+    color: #383636;
+}
+
+.produtos .detalhes_link{
+    margin-top: 5px;
+    margin-bottom: 10px;
+}
+
+.produtos .detalhes_link a{
+    color: #0000ff;
+    font-weight: bold;
+}
+
+.produtos .detalhes_link a:hover{
+    color: #6b6be4;
+}
+
+.produtos .quantidade{
+    font-weight: bold;
+}
+
+.btnQuant{
+    border: none;
+    cursor: pointer;
+    background: none;
+}
+
+.produtos .input_quantidade input{
+    width: 8%;
+    height: 25px;
+    background-color: #04a09c;
+    border-radius: 5px;
+    border: none;
+    text-align: center;
+    color: #ffffff;
+}
+
+.produtos .total{
+    text-transform: uppercase;
+    font-weight: bold;
+}
+
+.produtos .input_total input{
+    margin-top: 10px;
+    width: 20%;
+    height: 20px;
+}
+
+.produtos .remover{
+    color: #ff0000;
+    text-transform: uppercase;
+    font-weight: bold;
+    margin-top: 2%;
+}
+
+.produtos .remover a{
+    color: #ff0000;
+    text-decoration: none;
+}
+
+.produtos .remover a:hover{
+    color: #993636;
+    text-decoration: underline;
+}
+
+#container2{
+    border: 1px solid #c4c4c4;
+    border-radius: 5px;
+    position: absolute;
+    top: 50%;
+    right: 5%;
+    display: flex;
+    flex-direction: column;
+    margin-right: 10%;
+    padding: 2.5%;
+}
+
+#container2 #img_carrinho{
+    position: relative;
+    left: 25%;
+    margin-bottom: 15%;
+    margin-top: 10%;
+}
+
+#container2 .totalCarrinho{
+    text-transform: uppercase;
+    font-weight: bold;
+    color: #383636;
+    margin-bottom: 10%;
+}
+
+#container2 .totalCarrinho input{
+    border-top: none;
+    border-left: none;
+    border-right: none;
+}
+
+#inputVT{
+    width: 63%;
+}
+
+#container2 .totalCarrinho input:focus{
+    box-shadow: 0 0 0 0;
+    outline: 0;
+}
+
+#finalizar{
+    position: relative;
+    left: 5%;
+    width: 90%;
+    height: 60px;
+    border-radius: 10px;
+    border: none;
+    color: #FFFFFF;
+    font-size: 2em;
+    text-transform: uppercase;
+    background-color: #04a09c;
+}
+
+#finalizar:hover{
+    background-color: #013F4A;
+    color: #ffffff;
+    cursor: pointer;
+}
+
+#finalizar:focus{
+    box-shadow: none;
+    outline: none;
+}
+
+
+
+
+
+

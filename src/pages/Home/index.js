@@ -5,13 +5,16 @@ import "./styles.css";
 import { FiSearch } from "react-icons/fi";
 import { CgShoppingCart } from "react-icons/cg";
 import { FaRegUserCircle } from "react-icons/fa";
+import { useHistory } from "react-router";
 const { ipcRenderer } = window.require("electron");
 
 const Home = () => {
   const { contextData } = useAuth();
+  const history = useHistory();
   const [categoriasActives, setActiveCategoria] = useState([]);
   const [produtos, setProdutos] = useState([]);
   const [search, setSearch] = useState("");
+  const [produtosAdicionados, setProdutosAdicionados] = useState([]);
 
   useEffect(() => {
     ipcRenderer.send("maximize-window");
@@ -20,6 +23,12 @@ const Home = () => {
       console.log("Resposta de produtos: ", resp);
       setProdutos(resp);
     });
+
+    // ipcRenderer.on("pedido-reply", (e, produtoId) => {
+    //   if (produtosAdicionados.includes(produtoId)) {
+
+    //   }
+    // });
   }, []);
 
   useEffect(() => {
@@ -39,7 +48,11 @@ const Home = () => {
   };
 
   const handlerAddCarrinho = (produto_id) => {
-    console.log("Produto: " + produto_id);
+    // console.log("Produto: " + produto_id, "Usuario: " + contextData.usuario_id);
+    ipcRenderer.send("save-pedido", {
+      usuario_id: contextData.usuario_id,
+      produto_id: produto_id,
+    });
   };
 
   return (
@@ -51,7 +64,7 @@ const Home = () => {
           <span id="titulo">Easy Market System</span>
 
           <CgShoppingCart
-            onClick={() => console.log("Navegar Carrinho")}
+            onClick={() => history.push("/carrinho")}
             id="icone_carrinho"
             size={60}
             color="#fff"
@@ -110,12 +123,10 @@ const Home = () => {
             return (
               <div className="produtos" key={String(produto.nome + index)}>
                 <span className="nome_produto">{produto.nome}</span>
-                <div className="img_produto">
-                  <img src="" id="prodA" alt="Produto A" />
-                </div>
+                <div className="img_produto"></div>
 
                 <div className="detalhes">
-                  <a href="#">Detalhes</a>
+                  <a>Detalhes</a>
                 </div>
 
                 <button

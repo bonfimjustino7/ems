@@ -37,6 +37,7 @@ CREATE TABLE IF NOT EXISTS pedido (
     usuario_id INT NOT NULL,
     produto_id INT NOT NULL,
     quantidade INT NOT NULL DEFAULT 0,
+    total FLOAT DEFAULT 0.0,
     status VARCHAR(200) DEFAULT 'IN PROGRESS',
     CONSTRAINT FK_usuario_pedido FOREIGN KEY(usuario_id) REFERENCES usuario(id),
     CONSTRAINT FK_produto FOREIGN KEY(produto_id) REFERENCES produto(id),

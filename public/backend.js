@@ -2,10 +2,12 @@ const { ipcMain, BrowserWindow } = require("electron");
 
 const { getProdutos } = require("./controllers/produtos");
 const { Auth } = require("./controllers/login");
+const { savePedido, getPedidos } = require("./controllers/pedido");
 
 ipcMain.on("login", async (event, data) => {
   const { login, password } = data;
   const resposta = await Auth(login, password);
+  console.log(resposta);
   if (resposta) {
     event.reply("login-reply", resposta);
   } else {
@@ -26,4 +28,23 @@ ipcMain.on("produtos", async (event, data) => {
   } else {
     event.reply("produtos-reply", []);
   }
+});
+
+ipcMain.on("save-pedido", async (event, data) => {
+  const { usuario_id, produto_id } = data;
+  const pedidoOk = await savePedido({
+    usuario_id: usuario_id,
+    produto_id: produto_id,
+  });
+  if (pedidoOk) {
+    event.reply("pedido-reply", produto_id);
+  } else {
+    event.reply("pedido-reply", null);
+  }
+});
+
+ipcMain.on("pedidos", async (event, data) => {
+  const { usuario_id } = data;
+  const pedidos = await getPedidos({ usuario_id });
+  event.reply("pedidos-reply", pedidos);
 });

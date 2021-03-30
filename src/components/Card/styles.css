@@ -1,0 +1,69 @@
+.row {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+.card-carrinho {
+  width: 400px;
+  padding: 10px;
+  display: flex;
+  border: 1px solid #ccc;
+  margin-top: 10px;
+}
+.card-carrinho .img {
+  width: 250px;
+  background-color: #ccc;
+}
+.card-carrinho .card-carrinho-body {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.card-carrinho .actions {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.card-carrinho .actions .quantidade {
+  background-color: #04a09c;
+  padding: 5px;
+  color: white;
+}
+
+.actions .botao {
+  margin: 5px;
+  color: rgb(94, 93, 93);
+}
+.actions .botao:hover {
+  border: 1px solid rgb(94, 93, 93);
+}
+
+.actions input {
+  width: 100px;
+  outline: none;
+  padding: 2px;
+  margin-left: 4px;
+  font-size: 15px;
+}
+.actions span.delete {
+  color: red;
+  font-weight: bold;
+  font-size: 15px;
+  cursor: pointer;
+  border-bottom: 1px solid transparent;
+}
+.actions span.delete:hover,
+.actions span.delete:active {
+  border-bottom: 1px solid red;
+}
+.actions span {
+  font-size: 15px;
+  font-weight: bold;
+}
+.card-carrinho-body a {
+  color: blue;
+  font-size: 12px;
+  margin: 5px;
+}
