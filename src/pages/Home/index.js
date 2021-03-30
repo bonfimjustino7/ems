@@ -14,7 +14,6 @@ const Home = () => {
   const [categoriasActives, setActiveCategoria] = useState([]);
   const [produtos, setProdutos] = useState([]);
   const [search, setSearch] = useState("");
-  const [produtosAdicionados, setProdutosAdicionados] = useState([]);
 
   useEffect(() => {
     ipcRenderer.send("maximize-window");
@@ -23,12 +22,6 @@ const Home = () => {
       console.log("Resposta de produtos: ", resp);
       setProdutos(resp);
     });
-
-    // ipcRenderer.on("pedido-reply", (e, produtoId) => {
-    //   if (produtosAdicionados.includes(produtoId)) {
-
-    //   }
-    // });
   }, []);
 
   useEffect(() => {
@@ -53,6 +46,7 @@ const Home = () => {
       usuario_id: contextData.usuario_id,
       produto_id: produto_id,
     });
+    setProdutos(produtos.filter((p) => p.id !== produto_id));
   };
 
   return (
@@ -121,7 +115,7 @@ const Home = () => {
         <div id="conteudo">
           {produtos.map((produto, index) => {
             return (
-              <div className="produtos" key={String(produto.nome + index)}>
+              <div className="produtos" key={produto.id}>
                 <span className="nome_produto">{produto.nome}</span>
                 <div className="img_produto"></div>
 

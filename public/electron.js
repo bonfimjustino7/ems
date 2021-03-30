@@ -27,6 +27,7 @@ const createWindow = () => {
     webPreferences: {
       nodeIntegration: true,
     },
+    icon: "./logo-app.jpeg",
   });
 
   newWindow.loadURL(
@@ -35,7 +36,7 @@ const createWindow = () => {
       : `file://${path.join(__dirname, "../build/index.html")}`
   );
   newWindow.setMenu(null);
-  newWindow.webContents.openDevTools();
+  // newWindow.webContents.openDevTools();
 
   const splash = new BrowserWindow({
     width: 800,

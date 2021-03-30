@@ -7,6 +7,7 @@ exports.savePedido = async function ({ usuario_id, produto_id }) {
     const pedidoQuerySet = await pedidoObject.filter({
       usuario_id,
       produto_id,
+      status: "IN PROGRESS",
     });
 
     if (pedidoQuerySet.length) {

@@ -1,15 +1,19 @@
 const mysql = require("mysql");
 const fs = require("fs");
 const path = require("path");
+const doenv = require("dotenv");
+
+doenv.config();
+
 const dataSql = fs
   .readFileSync(`${path.join(__dirname, "../database/tables.sql")}`)
   .toString();
 
 const dbConn = mysql.createConnection({
   host: "localhost",
-  user: "root",
-  password: "123",
-  database: "loja",
+  user: process.env.user,
+  password: process.env.pass,
+  database: process.env.db,
   multipleStatements: true,
 });
 
@@ -18,6 +22,7 @@ const conectar = () => {
     dbConn.connect((err) => {
       if (err) {
         reject(err);
+        throw Error(err);
       }
 
       dbConn.query(dataSql, (err, results, fields) => {
