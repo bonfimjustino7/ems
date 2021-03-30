@@ -133,7 +133,7 @@ function Carrinho() {
             </div>
             <div className="field">
               <label>Valor Total:</label>
-              <input value={valorTotal} readOnly />
+              <input value={`R$ ${valorTotal.toFixed(2)}`} readOnly />
             </div>
             <div className="field">
               <label>Total Produtos:</label>
@@ -143,7 +143,7 @@ function Carrinho() {
               {mensagem ? (
                 <p className="msg-finalizar">Compra realizada com sucesso!</p>
               ) : (
-                <button onClick={finalizarPedido}>
+                <button disabled={!produtos.length} onClick={finalizarPedido}>
                   {loadingButton ? "Carregando..." : "Finalizar"}
                 </button>
               )}

@@ -32,7 +32,7 @@ function Card({ produto, onDelete, onAdiciona, onRemove }) {
         </div>
         <div className="actions">
           <span>Valor</span>
-          <input value={produto.valor} readOnly />
+          <input value={`R$ ${produto.valor.toFixed(2)}`} readOnly />
         </div>
         <div className="actions">
           <span onClick={onDelete} className="delete">

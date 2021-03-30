@@ -63,3 +63,8 @@
 .msg-finalizar {
   font-size: 20px;
 }
+
+.field button:disabled {
+  opacity: 0.5;
+  cursor: auto;
+}

@@ -74,7 +74,7 @@ const Home = () => {
             onChange={(e) => onChangeText(e.target.value)}
             type="text"
             id="txtBusca"
-            placeholder="Buscar produtos (nome, tipo, preço)"
+            placeholder="Buscar produtos"
           />
           <button type="button" id="btnLupa">
             <FiSearch size={30} color="#fff" />
