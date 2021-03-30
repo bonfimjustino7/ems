@@ -41,3 +41,32 @@ exports.getPedidos = async function ({ usuario_id }) {
     return [];
   }
 };
+exports.finalizarPedidos = async function ({ usuario_id }) {
+  try {
+    await new Pedido({}).finalizarPedido(usuario_id);
+    return true;
+  } catch (error) {
+    console.log(error);
+    return false;
+  }
+};
+
+exports.atualizarPedido = async function ({ pedido_id, quantidade }) {
+  try {
+    await new Pedido({}).atualizarQuantidade(pedido_id, quantidade);
+    return true;
+  } catch (error) {
+    console.log(error);
+    return false;
+  }
+};
+
+exports.removerPedido = async function ({ pedido_id }) {
+  try {
+    await new Pedido({}).delete(pedido_id);
+    return true;
+  } catch (error) {
+    console.log(error);
+    return false;
+  }
+};

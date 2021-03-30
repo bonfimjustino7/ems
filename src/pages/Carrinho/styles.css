@@ -60,3 +60,6 @@
 .field button:active {
   background-color: #047470;
 }
+.msg-finalizar {
+  font-size: 20px;
+}

@@ -14,6 +14,8 @@ function Carrinho() {
   const { contextData } = useAuth();
   const [valorTotal, setValorTotal] = useState(0);
   const [quantidadeProdutos, setQuantidade] = useState(0);
+  const [loadingButton, setLoading] = useState(false);
+  const [mensagem, setMensagem] = useState(null);
 
   const [produtos, setProdutos] = useState([]);
 
@@ -23,6 +25,13 @@ function Carrinho() {
     ipcRenderer.on("pedidos-reply", (e, resp) => {
       console.log("Resposta de produtos: ", resp);
       setProdutos(resp);
+    });
+
+    ipcRenderer.on("finalizar-pedido-reply", (e, resp) => {
+      if (resp) {
+        setProdutos([]);
+        setLoading(false);
+      }
     });
   }, []);
 
@@ -39,6 +48,14 @@ function Carrinho() {
     setQuantidade(produtos.length);
   };
 
+  const finalizarPedido = () => {
+    ipcRenderer.send("finalizar-pedido", {
+      usuario_id: contextData.usuario_id,
+    });
+    setLoading(true);
+    setMensagem(true);
+  };
+
   useEffect(() => {
     handlerCalcularTotais();
   }, [produtos]);
@@ -47,14 +64,20 @@ function Carrinho() {
     setProdutos(
       produtos.filter((produto) => produto.nome !== produtoRemovido.nome)
     );
+
+    ipcRenderer.send("remover-pedido", {
+      pedido_id: produtoRemovido.pedido_id,
+    });
   };
 
-  const onChange = (produto, quantidade) => {
+  const onChange = (produto, quantidade, pedido_id) => {
     let productIndex = produtos.findIndex((pr) => pr.nome === produto.nome);
 
     const updateProdutos = produtos;
     updateProdutos[productIndex].quantidade = quantidade;
     updateProdutos[productIndex].valor = produto.preco * quantidade;
+
+    ipcRenderer.send("atualizar-pedido", { pedido_id, quantidade });
 
     setProdutos(updateProdutos);
     handlerCalcularTotais();
@@ -86,8 +109,10 @@ function Carrinho() {
               return (
                 <Card
                   produto={produto}
-                  onAdiciona={(qtd) => onChange(produto, qtd)}
-                  onRemove={(qtd) => onChange(produto, qtd)}
+                  onAdiciona={(qtd) =>
+                    onChange(produto, qtd, produto.pedido_id)
+                  }
+                  onRemove={(qtd) => onChange(produto, qtd, produto.pedido_id)}
                   onDelete={() => handlerRemove(produto)}
                 />
               );
@@ -115,7 +140,13 @@ function Carrinho() {
               <input value={quantidadeProdutos} readOnly />
             </div>
             <div className="field">
-              <button>Finalizar</button>
+              {mensagem ? (
+                <p className="msg-finalizar">Compra realizada com sucesso!</p>
+              ) : (
+                <button onClick={finalizarPedido}>
+                  {loadingButton ? "Carregando..." : "Finalizar"}
+                </button>
+              )}
             </div>
           </div>
         </div>

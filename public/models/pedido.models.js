@@ -12,7 +12,37 @@ class Pedido extends Consultas {
   }
 
   getProductsUser(usuario_id) {
-    const queryStr = `SELECT produto.nome, pedido.quantidade, produto.preco, produto.usuario FROM pedido JOIN produto ON pedido.produto_id = produto.id WHERE pedido.usuario_id = ${usuario_id} AND pedido.status ='IN PROGRESS'`;
+    const queryStr = `SELECT pedido.id as pedido_id, produto.nome, pedido.quantidade, produto.preco, produto.usuario FROM pedido JOIN produto ON pedido.produto_id = produto.id WHERE pedido.usuario_id = ${usuario_id} AND pedido.status ='IN PROGRESS'`;
+
+    return new Promise((resolve, reject) => {
+      getConexao.query(queryStr, function (err, res) {
+        if (err) {
+          console.log("error: ", err);
+          reject(err);
+        } else {
+          resolve(ToJson(res));
+        }
+      });
+    });
+  }
+
+  finalizarPedido(usuario_id) {
+    const queryStr = `UPDATE pedido SET pedido.status = 'FINALIZED' WHERE usuario_id = ${usuario_id}`;
+
+    return new Promise((resolve, reject) => {
+      getConexao.query(queryStr, function (err, res) {
+        if (err) {
+          console.log("error: ", err);
+          reject(err);
+        } else {
+          resolve(ToJson(res));
+        }
+      });
+    });
+  }
+
+  atualizarQuantidade(pedido_id, novaQuantidade) {
+    const queryStr = `UPDATE pedido SET pedido.quantidade = ${novaQuantidade} WHERE id= ${pedido_id}`;
 
     return new Promise((resolve, reject) => {
       getConexao.query(queryStr, function (err, res) {
