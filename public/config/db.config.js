@@ -1,9 +1,9 @@
 const mysql = require("mysql");
 const fs = require("fs");
 const path = require("path");
-const doenv = require("dotenv");
-
-doenv.config();
+require("dotenv").config({
+  path: path.resolve(__dirname, "../.env"),
+});
 
 const dataSql = fs
   .readFileSync(`${path.join(__dirname, "../database/tables.sql")}`)
@@ -11,9 +11,9 @@ const dataSql = fs
 
 const dbConn = mysql.createConnection({
   host: "localhost",
-  user: process.env.user,
-  password: process.env.pass,
-  database: process.env.db,
+  user: process.env.USER_MYSQL,
+  password: process.env.PASSWORD,
+  database: process.env.DATABASE,
   multipleStatements: true,
 });
 

@@ -7,7 +7,7 @@
   "scripts": {
     "start": "concurrently \"cross-env BROWSER=none react-scripts start\" \"wait-on http://localhost:3000 && electron .\"",
     "start-server": "react-scripts start",
-    "build": "react-scripts build && npm run electron-build",
+    "build": "react-scripts build && npm run electron-build --publish=always",
     "electron-build": "electron-builder",
     "release": "react-build && electron-builder --publish=always"
   },
@@ -17,6 +17,7 @@
   "dependencies": {
     "cross-env": "^7.0.3",
     "dotenv": "^8.2.0",
+    "dotenv-expand": "^5.1.0",
     "electron-is-dev": "^2.0.0",
     "electron-store": "^7.0.2",
     "eslint-plugin-prettier": "^3.3.1",
