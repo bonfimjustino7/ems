@@ -1,0 +1,65 @@
+body {
+  overflow: hidden;
+}
+
+.container-gerente {
+  height: 100vh;
+  background-color: rgba(11, 76, 88, 0.432);
+}
+.container-menu {
+  min-width: 1000px;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  padding-top: 5%;
+  justify-content: center;
+}
+
+.menu {
+  width: 450px;
+  height: 400px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+.opcao {
+  cursor: pointer;
+  transition: all 0.3s;
+}
+.opcao:hover {
+  transform: scale(1.2);
+}
+
+#produto {
+  background-image: url("../../assets/img/Produtos.png");
+  background-position: center;
+  background-size: 180px;
+  background-repeat: no-repeat;
+}
+#cliente {
+  background-image: url("../../assets/img/Clientes.png");
+  background-position: center;
+  background-size: 180px;
+  background-repeat: no-repeat;
+}
+#usuario {
+  background-image: url("../../assets/img/Modo-cliente.png");
+  background-position: center;
+  background-size: 180px;
+  background-repeat: no-repeat;
+}
+#configuracao {
+  background-image: url("../../assets/img/Configuracoes.png");
+  background-position: center;
+  background-size: 180px;
+  background-repeat: no-repeat;
+  position: relative;
+  bottom: 9px;
+}
+.icon-power {
+  padding-right: 20px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+.icon-power:hover {
+  padding-right: 15px;
+}

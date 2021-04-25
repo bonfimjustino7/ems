@@ -12,7 +12,7 @@ class Pedido extends Consultas {
   }
 
   getProductsUser(usuario_id) {
-    const queryStr = `SELECT pedido.id as pedido_id, produto.nome, pedido.quantidade, produto.preco, produto.usuario FROM pedido JOIN produto ON pedido.produto_id = produto.id WHERE pedido.usuario_id = ${usuario_id} AND pedido.status ='IN PROGRESS'`;
+    const queryStr = `SELECT pedido.id as pedido_id, produto.nome, produto.imagem, pedido.quantidade, produto.preco, produto.usuario FROM pedido JOIN produto ON pedido.produto_id = produto.id WHERE pedido.usuario_id = ${usuario_id} AND pedido.status ='IN PROGRESS'`;
 
     return new Promise((resolve, reject) => {
       getConexao.query(queryStr, function (err, res) {

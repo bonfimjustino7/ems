@@ -1,0 +1,24 @@
+.select-field {
+  width: 100%;
+  border: unset;
+  border-bottom: 1px solid;
+  outline: none;
+  font-size: 15px;
+  margin-bottom: 20px;
+  padding: 5px 0;
+  min-width: 200px;
+  margin-right: 20px;
+  background-color: transparent;
+  cursor: pointer;
+}
+
+.select-field option {
+  background-color: #ccc;
+}
+select.error,
+select.error:focus {
+  border-bottom: 1px solid #fc6464;
+}
+label.error {
+  color: #fc6464;
+}

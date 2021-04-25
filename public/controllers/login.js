@@ -9,7 +9,11 @@ exports.Auth = async function (login, password) {
       1
     );
     if (user.length) {
-      return { usuario: user[0].nome, usuario_id: user[0].id };
+      return {
+        usuario: user[0].nome,
+        usuario_id: user[0].id,
+        isGerente: user[0].tipoconta === 1,
+      };
     } else {
       return false;
     }

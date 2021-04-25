@@ -58,7 +58,7 @@
   padding-right: 3%;
   padding-top: 0.5%;
   padding-bottom: 0.5%;
-  width: 200px;
+  width: 215px;
   text-align: center;
   font-size: 1.2em;
   outline: none;
@@ -83,6 +83,8 @@
   margin-top: 20px;
   display: flex;
   flex-wrap: wrap;
+  overflow: auto;
+  max-height: 600px;
 }
 
 #conteudo .produtos {
@@ -101,8 +103,10 @@
 
 #conteudo .produtos .img_produto {
   margin-top: 10px;
-  height: 130px;
+  width: 180px;
+  height: 180px;
   background-color: #ccc;
+  text-align: center;
 }
 
 #conteudo .produtos .detalhes {
@@ -137,4 +141,7 @@
   color: #013f4a;
   font-weight: bold;
   cursor: pointer;
+}
+body {
+  overflow: hidden;
 }

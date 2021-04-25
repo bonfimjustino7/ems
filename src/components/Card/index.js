@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { CgMathMinus } from "react-icons/cg";
 import { FiPlus } from "react-icons/fi";
 
@@ -20,10 +20,16 @@ function Card({ produto, onDelete, onAdiciona, onRemove }) {
 
   return (
     <div className="card-carrinho" key={produto}>
-      <div className="img"></div>
+      <div className="img">
+        <img
+          className="view-image"
+          src={process.env.PUBLIC_URL + `${produto.imagem}`}
+          alt=""
+        ></img>
+      </div>
       <div className="card-carrinho-body">
         <h4>{produto.nome}</h4>
-        <a>Deltalhes</a>
+
         <div className="actions">
           <span>Quantidade</span>
           <CgMathMinus className="botao" onClick={() => handlerRemover()} />

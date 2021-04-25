@@ -1,0 +1,15 @@
+.recuperar {
+  justify-content: center;
+  margin-top: 10px;
+}
+.row-info {
+  display: flex;
+}
+.label-error {
+  font-size: 10px;
+  position: absolute;
+  top: 60px;
+}
+.form-email {
+  position: relative;
+}

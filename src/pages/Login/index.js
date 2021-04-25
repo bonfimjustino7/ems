@@ -1,32 +1,42 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import "./styles.css";
 import { useHistory } from "react-router-dom";
 import { useAuth } from "../../context/auth";
 import Img from "../../assets/img/logo.png";
+import Input from "../../components/Input";
+import { useToasts } from "react-toast-notifications";
 
 const { ipcRenderer } = window.require("electron");
 
 const Login = () => {
   const history = useHistory();
   const { setContext } = useAuth();
+  const [login, setLogin] = useState("");
+  const [password, setPassword] = useState("");
+  const { addToast } = useToasts();
 
   useEffect(() => {
+    ipcRenderer.send("size-window", 1100, 600);
     ipcRenderer.on("login-reply", (e, resp) => {
       console.log("Resposta do ipcmain: ", resp);
       if (resp) {
-        setContext({ usuario: resp.usuario, usuario_id: resp.usuario_id });
-        history.push("/home");
+        setContext({
+          usuario: resp.usuario,
+          usuario_id: resp.usuario_id,
+          isGerente: resp.isGerente,
+        });
+        history.push("/gerente");
       } else {
-        alert("Login inválido");
+        addToast("Login inválido", {
+          appearance: "error",
+          autoDismiss: true,
+        });
       }
     });
   }, [history]);
 
   const onSubmit = (e) => {
     e.preventDefault();
-    const login = document.getElementById("login").value;
-    const password = document.getElementById("password").value;
-
     ipcRenderer.send("login", { login, password });
   };
 
@@ -41,13 +51,17 @@ const Login = () => {
         <h1>Bem Vindo</h1>
         <p>Por favor acesse sua conta</p>
         <form id="formulario" onSubmit={onSubmit}>
-          <label>Login / Email</label>
-          <input id="login" type="text" name="login" />
-          <label>Senha</label>
-          <input id="password" type="password" name="password" />
+          <Input label="Login" onChange={(e) => setLogin(e.target.value)} />
+          <Input
+            label="Senha"
+            type="password"
+            onChange={(e) => setPassword(e.target.value)}
+          />
 
           <div className="actions">
-            <a href="#">Esqueci minha senha</a>
+            <a onClick={() => history.push("/recuperar-senha")}>
+              Esqueci minha senha
+            </a>
             <button type="submit">OK</button>
           </div>
         </form>

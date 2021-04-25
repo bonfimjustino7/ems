@@ -1,6 +1,11 @@
 const { ipcMain, BrowserWindow } = require("electron");
-
-const { getProdutos } = require("./controllers/produtos");
+const { writeFileSync } = require("fs");
+const path = require("path");
+const {
+  getProdutos,
+  saveProduto,
+  deleteProduto,
+} = require("./controllers/produtos");
 const { Auth } = require("./controllers/login");
 const {
   savePedido,
@@ -9,6 +14,9 @@ const {
   atualizarPedido,
   removerPedido,
 } = require("./controllers/pedido");
+const { sendMail } = require("./scripts/send_email");
+const CodigoUsuario = require("./models/codigo.models");
+const User = require("./models/user.models");
 
 ipcMain.on("login", async (event, data) => {
   const { login, password } = data;
@@ -27,13 +35,55 @@ ipcMain.on("maximize-window", (event) => {
   browserWindow.maximize();
 });
 
+ipcMain.on("size-window", (event, width, height) => {
+  let browserWindow = BrowserWindow.fromWebContents(event.sender);
+  browserWindow.restore();
+  browserWindow.setSize(width, height);
+  browserWindow.resizable = false;
+});
+
 ipcMain.on("produtos", async (event, data) => {
-  const resposta = await getProdutos(data);
+  const { limit } = data;
+  delete data.limit;
+  const resposta = await getProdutos(data, limit);
   if (resposta) {
     event.reply("produtos-reply", resposta);
   } else {
     event.reply("produtos-reply", []);
   }
+});
+
+ipcMain.on("save-produto", async (event, data) => {
+  const { imageProduct } = data;
+
+  const newData = {
+    nome: data.nomeProduto,
+    marca: data.marcaProduto,
+    descricao: data.descricaoProduto,
+    quantidade: data.quantidadeProduto,
+    codigo_barras: data.codeProduto,
+    preco: data.precoProduto,
+    tipo: data.tipoProduto,
+  };
+  const filenameImage = `${path.join(__dirname)}/image/${data.nomeProduto}.png`;
+  newData.imagem = `image/${data.nomeProduto}.png`;
+
+  if (imageProduct) {
+    console.log("image Produto");
+    const base64Data = imageProduct.replace(/^data:image\/png;base64,/, "");
+    await writeFileSync(filenameImage, base64Data, "base64", function (err) {
+      console.log(err);
+    });
+  }
+
+  const resposta = await saveProduto(newData);
+
+  event.reply("produtos-save-reply", resposta);
+});
+
+ipcMain.on("delete-produto", async (event, data) => {
+  const resposta = await deleteProduto(data);
+  event.returnValue = resposta;
 });
 
 ipcMain.on("save-pedido", async (event, data) => {
@@ -71,4 +121,55 @@ ipcMain.on("remover-pedido", async (event, data) => {
   const { pedido_id } = data;
   const resposta = await removerPedido({ pedido_id });
   event.reply("remover-pedido-reply", resposta);
+});
+
+ipcMain.on("recuperar-senha", async (e, data) => {
+  const { email } = data;
+
+  try {
+    const codigoRandom = Math.floor(Math.random() * 10000000);
+
+    const res = await new CodigoUsuario({ code: codigoRandom }).createCode(
+      email
+    );
+    if (res) {
+      e.returnValue = res;
+      await sendMail({
+        from: "EMS - Easy Market System <admin@medicaronline.xyz>",
+        to: [email],
+        subject: "Recuperação de senha",
+        text: `Olá, foi solicitado a recuperação de senha de ${email}\nPor favor insira o seguinte código: ${codigoRandom}, no campo "Código de Recuperação" no EMS.`,
+      });
+    } else {
+      e.returnValue = null;
+    }
+  } catch (error) {
+    console.log(error);
+    e.returnValue = null;
+  }
+});
+
+ipcMain.on("verify-code", async (e, data) => {
+  const { code } = data;
+
+  try {
+    const res = await new CodigoUsuario({}).validate(code);
+    e.returnValue = res;
+  } catch (error) {
+    console.log(error);
+    e.returnValue = null;
+  }
+});
+
+ipcMain.on("nova-senha", async (e, data) => {
+  const { senha, usuarioID } = data;
+
+  try {
+    console.log(usuarioID);
+    const res = await new User({ password: senha }).updatePassword(usuarioID);
+    e.returnValue = res;
+  } catch (error) {
+    console.log(error);
+    e.returnValue = null;
+  }
 });

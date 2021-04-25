@@ -1,0 +1,29 @@
+.form-row input {
+  width: 100%;
+  border: unset;
+  border-bottom: 1px solid;
+  outline: none;
+  font-size: 15px;
+  margin-bottom: 20px;
+  padding: 5px 0;
+  min-width: 120px;
+  margin-right: 20px;
+}
+.form-row input:focus {
+  border-bottom: 1px solid #04a09c;
+}
+
+.form-row textarea {
+  max-width: 450px;
+  min-width: 300px;
+  min-height: 150px;
+  outline: none;
+}
+input.error,
+input.error:focus,
+textarea.error {
+  border-bottom: 1px solid #fc6464;
+}
+label.error {
+  color: #fc6464;
+}

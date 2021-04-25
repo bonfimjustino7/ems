@@ -14,9 +14,10 @@ class Produto extends Consultas {
     this.descricao = produto.descricao;
     this.tipo = produto.tipo;
     this.usuario = produto.usuario;
+    this.imagem = produto.imagem;
   }
 
-  filter(filters) {
+  filter(filters, limit) {
     let params = Object.keys(filters)
       .filter((key) => filters[key].length)
       .map((key) => {
@@ -32,7 +33,10 @@ class Produto extends Consultas {
       });
 
     params = params.join(" AND ");
-    const queryStr = `SELECT * FROM ${this.table_name} WHERE ${params}`;
+    const queryStr = `SELECT * FROM ${this.table_name} WHERE ${params} ${
+      limit ? "LIMIT " + limit : ""
+    }`;
+
     return new Promise((resolve, reject) => {
       getConexao.query(queryStr, function (err, res) {
         if (err) {

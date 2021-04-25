@@ -6,6 +6,18 @@ class Consultas {
     this.table_name = table;
   }
 
+  execute(queryStr) {
+    return new Promise((resolve, reject) => {
+      getConexao.query(queryStr, function (err, res) {
+        if (err) {
+          console.log("error: ", err);
+          reject(err);
+        } else {
+          resolve(ToJson(res));
+        }
+      });
+    });
+  }
   create() {
     return new Promise((resolve, reject) => {
       getConexao.query(
@@ -71,16 +83,19 @@ class Consultas {
     }
   }
 
-  findAll() {
+  findAll(limit) {
     return new Promise((resolve, reject) => {
-      getConexao.query(`SELECT * FROM ${this.table_name}`, function (err, res) {
-        if (err) {
-          console.log("error: ", err);
-          reject(err);
-        } else {
-          resolve(res);
+      getConexao.query(
+        `SELECT * FROM ${this.table_name} ${limit ? " LIMIT " + limit : ""}`,
+        function (err, res) {
+          if (err) {
+            console.log("error: ", err);
+            reject(err);
+          } else {
+            resolve(res);
+          }
         }
-      });
+      );
     });
   }
 

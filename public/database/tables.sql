@@ -10,15 +10,27 @@ CREATE TABLE IF NOT EXISTS usuario (
     telefone  VARCHAR(9),
     tipoconta BOOLEAN DEFAULT 0,
     gerente INT,
-    UNIQUE(cpf),
+    UNIQUE(cpf, email),
     table_name VARCHAR(200)
 );
 
 ALTER TABLE usuario ADD FOREIGN KEY(gerente) REFERENCES usuario(id);
 
+CREATE TABLE IF NOT EXISTS codigos_recuperacao (
+    id INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
+    usuario_id INT NOT NULL,
+    code VARCHAR(7) NOT NULL,
+    data_criacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    status VARCHAR(200) DEFAULT 'VALID',
+    table_name VARCHAR(200),
+    UNIQUE(code),
+
+    CONSTRAINT FK_usuario_code FOREIGN KEY(usuario_id) REFERENCES usuario(id)
+);
 
 CREATE TABLE IF NOT EXISTS produto (    
     id INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
+    imagem VARCHAR(200),
     nome VARCHAR(200) NOT NULL,
     marca VARCHAR(200),
     preco FLOAT NOT NULL,
@@ -40,6 +52,6 @@ CREATE TABLE IF NOT EXISTS pedido (
     total FLOAT DEFAULT 0.0,
     status VARCHAR(200) DEFAULT 'IN PROGRESS',
     CONSTRAINT FK_usuario_pedido FOREIGN KEY(usuario_id) REFERENCES usuario(id),
-    CONSTRAINT FK_produto FOREIGN KEY(produto_id) REFERENCES produto(id),
+    CONSTRAINT FK_produto FOREIGN KEY(produto_id) REFERENCES produto(id) ON DELETE CASCADE,
     table_name VARCHAR(200)
 );

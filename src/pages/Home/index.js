@@ -7,6 +7,7 @@ import { CgShoppingCart } from "react-icons/cg";
 import { FaRegUserCircle } from "react-icons/fa";
 import { useHistory } from "react-router";
 const { ipcRenderer } = window.require("electron");
+const path = require("path");
 
 const Home = () => {
   const { contextData } = useAuth();
@@ -17,11 +18,12 @@ const Home = () => {
 
   useEffect(() => {
     ipcRenderer.send("maximize-window");
-
     ipcRenderer.on("produtos-reply", (e, resp) => {
       console.log("Resposta de produtos: ", resp);
       setProdutos(resp);
     });
+
+    return () => ipcRenderer.removeAllListeners("produtos-reply");
   }, []);
 
   useEffect(() => {
@@ -53,7 +55,16 @@ const Home = () => {
     <>
       <header>
         <div id="cabecalho">
-          <FaRegUserCircle id="icone_user" size={60} color="#fff" />
+          {!contextData.isGerente ? (
+            <FaRegUserCircle
+              onClick={() => history.push("/gerente")}
+              id="icone_user"
+              size={60}
+              color="#fff"
+            />
+          ) : (
+            <div></div>
+          )}
 
           <span id="titulo">Easy Market System</span>
 
@@ -117,10 +128,12 @@ const Home = () => {
             return (
               <div className="produtos" key={produto.id}>
                 <span className="nome_produto">{produto.nome}</span>
-                <div className="img_produto"></div>
-
-                <div className="detalhes">
-                  <a>Detalhes</a>
+                <div className="img_produto">
+                  <img
+                    className="view-image"
+                    src={process.env.PUBLIC_URL + `${produto.imagem}`}
+                    alt=""
+                  ></img>
                 </div>
 
                 <div className="detalhes">
