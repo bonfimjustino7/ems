@@ -16,15 +16,17 @@ const Login = () => {
   const { addToast } = useToasts();
 
   useEffect(() => {
-    ipcRenderer.send("size-window", 1100, 600);
     ipcRenderer.on("login-reply", (e, resp) => {
       console.log("Resposta do ipcmain: ", resp);
       if (resp) {
-        setContext({
-          usuario: resp.usuario,
-          usuario_id: resp.usuario_id,
-          isGerente: resp.isGerente,
-        });
+        localStorage.setItem(
+          "usuario",
+          JSON.stringify({
+            usuario: resp.usuario,
+            usuario_id: resp.usuario_id,
+            isGerente: resp.isGerente,
+          })
+        );
         history.push("/gerente");
       } else {
         addToast("Login inválido", {

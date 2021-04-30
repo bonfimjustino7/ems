@@ -11,7 +11,7 @@ const { ipcRenderer } = window.require("electron");
 
 function Carrinho() {
   const history = useHistory();
-  const { contextData } = useAuth();
+  const [contextData, setContext] = useState({});
   const [valorTotal, setValorTotal] = useState(0);
   const [quantidadeProdutos, setQuantidade] = useState(0);
   const [loadingButton, setLoading] = useState(false);
@@ -20,7 +20,12 @@ function Carrinho() {
   const [produtos, setProdutos] = useState([]);
 
   useEffect(() => {
-    ipcRenderer.send("pedidos", { usuario_id: contextData.usuario_id });
+    const dataString = localStorage.getItem("usuario");
+    const dataObject = JSON.parse(dataString);
+
+    setContext(dataObject);
+
+    ipcRenderer.send("pedidos", { usuario_id: dataObject.usuario_id });
 
     ipcRenderer.on("pedidos-reply", (e, resp) => {
       console.log("Resposta de produtos: ", resp);

@@ -7,11 +7,16 @@ const { ipcRenderer } = window.require("electron");
 
 const Gerente = () => {
   const history = useHistory();
-  const { contextData } = useAuth();
+  const [contextData, setContextData] = useState({});
 
   useEffect(() => {
     ipcRenderer.send("maximize-window");
     console.log("size");
+
+    const dataString = localStorage.getItem("usuario");
+    const dataObject = JSON.parse(dataString);
+
+    setContextData(dataObject);
   }, [history]);
 
   return (
@@ -23,7 +28,11 @@ const Gerente = () => {
           <div>
             <FiPower
               className="icon-power"
-              onClick={() => history.push("/")}
+              onClick={() => {
+                ipcRenderer.send("size-window", 1100, 600);
+                localStorage.removeItem("usuario");
+                history.push("/");
+              }}
               color="#fff"
               size={60}
             />
@@ -50,7 +59,11 @@ const Gerente = () => {
             ></div>
 
             {contextData.isGerente && (
-              <div className="opcao" id="cliente"></div>
+              <div
+                className="opcao"
+                id="cliente"
+                onClick={() => history.push("/usuarios")}
+              ></div>
             )}
             {contextData.isGerente && (
               <div
@@ -59,7 +72,11 @@ const Gerente = () => {
                 id="usuario"
               ></div>
             )}
-            <div className="opcao" id="configuracao"></div>
+            <div
+              className="opcao"
+              id="configuracao"
+              onClick={() => history.push("/configuracoes")}
+            ></div>
           </div>
         </div>
       </div>

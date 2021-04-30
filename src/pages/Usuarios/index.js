@@ -10,7 +10,7 @@ import { useAuth } from "../../context/auth";
 import { useToasts } from "react-toast-notifications";
 const { ipcRenderer } = window.require("electron");
 
-const Produtos = () => {
+const Usuarios = () => {
   const [data, setData] = useState([]);
   const history = useHistory();
   const [loading, setLoading] = useState(true);
@@ -21,20 +21,20 @@ const Produtos = () => {
   const { addToast } = useToasts();
 
   const deleteProduto = (id) => {
-    const res = ipcRenderer.sendSync("delete-produto", { idProduto: id });
+    const res = ipcRenderer.sendSync("delete-usuario", { idUsuario: id });
     if (res) {
       setData(data.filter((item) => item.id !== id));
     } else {
-      addToast("Erro ao excluir produto", {
+      addToast("Erro ao excluir usuario", {
         appearance: "error",
         autoDismiss: true,
       });
     }
   };
-  const editarProduto = (row) => {
+  const editarUsuario = (row) => {
     console.log(row);
     setContext({ ...contextData, usuario: row });
-    history.push("/produtos/novo");
+    history.push("/usuarios/novo");
   };
 
   const columns = [
@@ -44,35 +44,42 @@ const Produtos = () => {
       sortable: true,
     },
     {
+      name: "login",
+      selector: "login",
+      sortable: true,
+    },
+    {
       name: "Nome",
       selector: "nome",
       sortable: true,
     },
     {
-      name: "Descrição",
-      selector: "descricao",
+      name: "Sobrenome",
+      selector: "sobrenome",
       sortable: true,
     },
     {
-      name: "Marca",
-      selector: "marca",
+      name: "Email",
+      selector: "email",
       sortable: true,
     },
     {
-      name: "Preço",
-      selector: "preco",
+      name: "Telefone",
+      selector: "telefone",
       sortable: true,
     },
     {
-      name: "Quantidade",
-      selector: "quantidade",
+      name: "CPF",
+      selector: "cpf",
       sortable: true,
     },
     {
-      name: "Código de Barras",
-      selector: "codigo_barras",
+      name: "Tipo",
+      selector: "tipoconta",
       sortable: true,
+      cell: (row) => (row.tipoconta === 1 ? "Gerente" : "Cliente"),
     },
+
     {
       name: "Ações",
       allowOverflow: true,
@@ -84,7 +91,7 @@ const Produtos = () => {
               size={20}
               style={{ marginRight: 10 }}
               className="icon-button"
-              onClick={() => editarProduto(row)}
+              onClick={() => editarUsuario(row)}
             />
             <BsFillTrashFill
               className="icon-button"
@@ -99,17 +106,17 @@ const Produtos = () => {
   ];
 
   useEffect(() => {
-    ipcRenderer.on("produtos-reply", (e, resp) => {
-      console.log("Resposta de produtos: ", resp);
+    ipcRenderer.on("usuarios-reply", (e, resp) => {
+      console.log("Resposta usuarios: ", resp);
       setData(resp);
       setLoading(false);
     });
 
-    return () => ipcRenderer.removeAllListeners("produtos-reply");
+    return () => ipcRenderer.removeAllListeners("usuarios-reply");
   }, []);
 
   useEffect(() => {
-    ipcRenderer.send("produtos", { nome: filterText });
+    ipcRenderer.send("usuarios", { nome: filterText });
   }, [filterText]);
 
   const Loading = () => {
@@ -181,7 +188,7 @@ const Produtos = () => {
           <div></div>
         </div>
         <div id="subtitulo">
-          <span id="subSpan">Produtos cadastrados</span>
+          <span id="subSpan">Usuários cadastrados</span>
         </div>
       </header>
       <div className="container-tabela">
@@ -199,7 +206,7 @@ const Produtos = () => {
             <ButtonAdicionar
               onClick={() => {
                 setContext({ ...contextData, usuario: null });
-                history.push("/produtos/novo");
+                history.push("/usuarios/novo");
               }}
             />,
           ]}
@@ -215,4 +222,4 @@ const Produtos = () => {
   );
 };
 
-export default Produtos;
+export default Usuarios;

@@ -10,7 +10,7 @@ const { ipcRenderer } = window.require("electron");
 const path = require("path");
 
 const Home = () => {
-  const { contextData } = useAuth();
+  const [contextData, setContext] = useState({});
   const history = useHistory();
   const [categoriasActives, setActiveCategoria] = useState([]);
   const [produtos, setProdutos] = useState([]);
@@ -22,6 +22,10 @@ const Home = () => {
       console.log("Resposta de produtos: ", resp);
       setProdutos(resp);
     });
+
+    const dataString = localStorage.getItem("usuario");
+    const dataObject = JSON.parse(dataString);
+    setContext(dataObject);
 
     return () => ipcRenderer.removeAllListeners("produtos-reply");
   }, []);
@@ -55,16 +59,12 @@ const Home = () => {
     <>
       <header>
         <div id="cabecalho">
-          {!contextData.isGerente ? (
-            <FaRegUserCircle
-              onClick={() => history.push("/gerente")}
-              id="icone_user"
-              size={60}
-              color="#fff"
-            />
-          ) : (
-            <div></div>
-          )}
+          <FaRegUserCircle
+            onClick={() => history.push("/gerente")}
+            id="icone_user"
+            size={60}
+            color="#fff"
+          />
 
           <span id="titulo">Easy Market System</span>
 
@@ -131,7 +131,7 @@ const Home = () => {
                 <div className="img_produto">
                   <img
                     className="view-image"
-                    src={process.env.PUBLIC_URL + `${produto.imagem}`}
+                    src={"http://localhost:3001/files/" + `${produto.imagem}`}
                     alt=""
                   ></img>
                 </div>

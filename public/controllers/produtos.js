@@ -42,3 +42,15 @@ exports.deleteProduto = async function (data) {
     return false;
   }
 };
+
+exports.AtualizarProduto = async function (data) {
+  try {
+    const { idProduto } = data;
+    console.log(data);
+    await new Produto(data).update(idProduto);
+    return true;
+  } catch (error) {
+    console.log(error);
+    return false;
+  }
+};

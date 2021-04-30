@@ -7,25 +7,26 @@ import "./styles.css";
 import Select from "../../components/Select";
 import { Formik } from "formik";
 import * as Yup from "yup";
+import { useToasts } from "react-toast-notifications";
+import { useAuth } from "../../context/auth";
+
 const { ipcRenderer } = window.require("electron");
 
 function Cadastro() {
   const history = useHistory();
   const inputImage = useRef(null);
   const [imageProduct, setImageProduct] = useState(null);
-
-  useEffect(() => {
-    ipcRenderer.on("produtos-save-reply", (e, resp) => {
-      history.push("/produtos");
-    });
-    return () => ipcRenderer.removeAllListeners("produtos-save-reply");
-  }, [history]);
+  const [extensionImage, setExtensionImage] = useState(null);
+  const { addToast } = useToasts();
+  const { contextData } = useAuth();
 
   const imageHandler = (e) => {
     const reader = new FileReader();
 
     if (e.target?.files?.length) {
       reader.readAsDataURL(e.target.files[0]);
+      console.log(e.target.files[0].type);
+      setExtensionImage(e.target.files[0].type);
     }
     reader.onload = () => {
       if (reader.readyState === 2) {
@@ -41,17 +42,40 @@ function Cadastro() {
     setImageProduct(null);
   };
   const saveProduto = (values) => {
-    ipcRenderer.send("save-produto", {
-      ...values,
-      imageProduct,
-    });
+    const imagem = imageProduct ? imageProduct : contextData.usuario?.imagem;
+    if (contextData.usuario) {
+      const res = ipcRenderer.sendSync("update-produto", {
+        ...values,
+        imagem,
+        extensionImage,
+        id: contextData.usuario.id,
+      });
+      addToast("Produto atualizado com sucesso.", {
+        appearance: "success",
+        autoDismiss: true,
+      });
+    } else {
+      const res = ipcRenderer.sendSync("save-produto", {
+        ...values,
+        imagem: imageProduct,
+        extensionImage,
+      });
+      addToast("Produto cadastrado com sucesso.", {
+        appearance: "success",
+        autoDismiss: true,
+      });
+    }
+
+    history.push("/produtos");
   };
 
   const ProdutoSchema = Yup.object().shape({
     nomeProduto: Yup.string().required("Required"),
     marcaProduto: Yup.string(),
     descricaoProduto: Yup.string(),
-    precoProduto: Yup.string().required("Required"),
+    precoProduto: Yup.number()
+      .min(1, "Deve ser maior que 1")
+      .required("Required"),
     quantidadeProduto: Yup.number()
       .min(1, "Deve ser maior que 1")
       .required("Required"),
@@ -78,20 +102,34 @@ function Cadastro() {
           <div></div>
         </div>
         <div id="subtitulo">
-          <span id="subSpan">Cadastrar Produto</span>
+          <span id="subSpan">Produto</span>
         </div>
       </header>
       <div className="container-cadastro">
         <div className="container-form">
           <Formik
             initialValues={{
-              nomeProduto: "",
-              marcaProduto: "",
-              precoProduto: "",
-              tipoProduto: "",
-              quantidadeProduto: 0,
-              codeProduto: "",
-              descricaoProduto: "",
+              nomeProduto: contextData.usuario?.nome
+                ? contextData.usuario?.nome
+                : "",
+              marcaProduto: contextData.usuario?.marca
+                ? contextData.usuario?.marca
+                : "",
+              precoProduto: contextData.usuario?.preco
+                ? contextData.usuario?.preco
+                : "",
+              tipoProduto: contextData.usuario?.tipo
+                ? contextData.usuario?.tipo
+                : "",
+              quantidadeProduto: contextData.usuario?.quantidade
+                ? contextData.usuario?.quantidade
+                : "",
+              codeProduto: contextData.usuario?.codigo_barras
+                ? contextData.usuario?.codigo_barras
+                : "",
+              descricaoProduto: contextData.usuario?.descricao
+                ? contextData.usuario?.descricao
+                : "",
             }}
             validationSchema={ProdutoSchema}
             onSubmit={(values, { setSubmitting }) => {
@@ -112,12 +150,18 @@ function Cadastro() {
                 <div className="row">
                   <div className="col-img">
                     <div className="quadro-img">
-                      {imageProduct && (
+                      {imageProduct || contextData.usuario?.imagem ? (
                         <img
                           className="view-image"
-                          src={imageProduct}
+                          src={
+                            imageProduct
+                              ? imageProduct
+                              : `http://localhost:3001/files/${contextData.usuario?.imagem}`
+                          }
                           alt=""
                         ></img>
+                      ) : (
+                        ""
                       )}
                     </div>
                     <input
@@ -127,7 +171,11 @@ function Cadastro() {
                       accept="image/*"
                       style={{ display: "none" }}
                     />
-                    <button className="button importar" onClick={handlerUpload}>
+                    <button
+                      type="button"
+                      className="button importar"
+                      onClick={handlerUpload}
+                    >
                       <FiUpload style={{ marginRight: 10 }} />
                       <span>Imagem</span>
                     </button>
@@ -171,11 +219,11 @@ function Cadastro() {
                             label="Tipo"
                             value={values.tipoProduto}
                             options={[
-                              "Limpeza",
-                              "Higiene",
-                              "Frutas",
-                              "Secos",
-                              "Frios",
+                              { label: "Limpeza", value: "Limpeza" },
+                              { label: "Higiene", value: "Higiene" },
+                              { label: "Frutas", value: "Frutas" },
+                              { label: "Secos", value: "Secos" },
+                              { label: "Frios", value: "Frios" },
                             ]}
                             className={errors.tipoProduto && "error"}
                           />
@@ -220,9 +268,10 @@ function Cadastro() {
                           disabled={isSubmitting}
                           className="button adicionar"
                         >
-                          Salvar
+                          {contextData.usuario ? "Editar" : "Salvar"}
                         </button>
                         <button
+                          type="button"
                           onClick={() => history.goBack()}
                           className="button excluir"
                           style={{ marginLeft: 20 }}

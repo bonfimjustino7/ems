@@ -55,6 +55,26 @@ class Pedido extends Consultas {
       });
     });
   }
+
+  async getTotalPedidos(id) {
+    try {
+      const sql = `SELECT SUM(pedido.quantidade * produto.preco) as total, AVG(pedido.quantidade * produto.preco) as medicao_gasto FROM pedido JOIN produto ON pedido.produto_id=produto.id WHERE pedido.usuario_id = ${id}`;
+      return await this.execute(sql);
+    } catch (error) {
+      console.log(error);
+      return null;
+    }
+  }
+
+  async quantidadeByTipoProduto(id) {
+    try {
+      const sql = `SELECT produto.tipo, SUM(pedido.quantidade) as quantidade FROM pedido JOIN produto ON pedido.produto_id=produto.id WHERE pedido.usuario_id = ${id} GROUP BY produto.tipo`;
+      return await this.execute(sql);
+    } catch (error) {
+      console.log(error);
+      return null;
+    }
+  }
 }
 
 module.exports = Pedido;

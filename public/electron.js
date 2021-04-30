@@ -5,13 +5,6 @@ const isDev = require("electron-is-dev");
 const conn = require("./config/db.config");
 const { generateMock } = require("./controllers/populate");
 
-// Enable live reload for Electron too
-if (isDev) {
-  require("electron-reload")(__dirname, {
-    electron: require(`${path.join(__dirname, "../node_modules/electron")}`),
-  });
-}
-
 app.on("ready", async () => {
   await conn.conectar();
   generateMock();
@@ -36,7 +29,7 @@ const createWindow = () => {
       : `file://${path.join(__dirname, "../build/index.html")}`
   );
   newWindow.setMenu(null);
-  newWindow.webContents.openDevTools();
+  // newWindow.webContents.openDevTools();
 
   const splash = new BrowserWindow({
     width: 800,
@@ -72,3 +65,5 @@ app.on("activate", () => {
   }
 });
 require("./backend");
+
+require("./express");

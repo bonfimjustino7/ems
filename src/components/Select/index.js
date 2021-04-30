@@ -11,9 +11,11 @@ function Select({ value, options, label, onSelect, className }) {
         onChange={onSelect}
         className={`select-field ${className}`}
       >
-        <option value={0}>Nenhum</option>
+        <option value={null}>Nenhum</option>
         {options.map((option) => (
-          <option value={option}>{option}</option>
+          <option key={option.value} value={option.value}>
+            {option.label}
+          </option>
         ))}
       </select>
     </>

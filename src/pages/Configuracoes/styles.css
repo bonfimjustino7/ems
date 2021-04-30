@@ -1,0 +1,13 @@
+.botoes-configs {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+button.excluir {
+  padding: 10px 20px;
+}
+button.info {
+  background-color: #0c75b3;
+  color: white;
+}

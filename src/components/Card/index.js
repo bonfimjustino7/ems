@@ -23,7 +23,7 @@ function Card({ produto, onDelete, onAdiciona, onRemove }) {
       <div className="img">
         <img
           className="view-image"
-          src={process.env.PUBLIC_URL + `${produto.imagem}`}
+          src={`http://localhost:3001/files/${produto.imagem}`}
           alt=""
         ></img>
       </div>
