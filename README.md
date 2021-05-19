@@ -1,9 +1,15 @@
-# ems
-
+# EMS - Easy Marketing System
+Sistema de gerenciamento de compras e estoque de uma loja.
 
 #Dependências
  - Node JS >= 12
  - Mysql >=8
+
+#Tecnologias
+ - Electron
+ - React JS
+ - Express
+ 
  
  
  ## Instalação:
